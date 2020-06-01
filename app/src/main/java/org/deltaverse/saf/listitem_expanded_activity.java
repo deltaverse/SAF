@@ -2,12 +2,13 @@ package org.deltaverse.saf;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
@@ -17,13 +18,15 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
 
 public class listitem_expanded_activity extends AppCompatActivity
 {
     ImageView imageView;
+    TextView title;
+    TextView year;
+    TextView rating;
+    Button watchon;
+    EditText desc;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -114,7 +117,12 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 	public void show_url_data(String base_url)
 	{
-        imageView = findViewById(R.id.imageView2);
+        imageView = findViewById(R.id.poster);
+        title = findViewById(R.id.title);
+		year = findViewById(R.id.year);
+		rating = findViewById(R.id.rating);
+		desc = findViewById(R.id.desc);
+		watchon = findViewById(R.id.watchon);
 		try
 		{
 			//TITLE
@@ -122,11 +130,13 @@ public class listitem_expanded_activity extends AppCompatActivity
 			Elements title_classes = doc.getElementsByClass("css-1jw3688 e14injhv6");
 			Elements title_h1 = title_classes.get(0).getElementsByTag("h1");
 			String title_name = title_h1.get(0).text();
+			title.setText(title_name);
 			//System.out.println("Title : "+title_name);
 
 			//GENRE & YEAR
 			Elements genreyear_classes = doc.getElementsByClass("css-jmgx9u");
 			int i;
+			StringBuilder s = new StringBuilder();
 			for (i=0;i<3;i++)
 			{
 				if (i!=2)
@@ -134,15 +144,19 @@ public class listitem_expanded_activity extends AppCompatActivity
 					if (i==0)
 					{
 						//System.out.println("GENRE: ");
+						s.append("GENRE : ");
 					}
 					//System.out.println(genreyear_classes.get(i).text());
+					s.append(genreyear_classes.get(i).text());
 				}
 
 				else
 				{
 					//System.out.println("YEAR: "+genreyear_classes.get(i).text());
+					s.append(genreyear_classes.get(i).text());
 				}
 			}
+			year.setText(s);
 
 			//DURATION (NOT ABLE TO IMPLEMENT COZ INDEX IS DIFFERENT FOR DIFFERENT MOVIES)
 
@@ -151,11 +165,13 @@ public class listitem_expanded_activity extends AppCompatActivity
 			Elements desc_classes = doc.getElementsByClass("css-zzy0ri e50tfam1");
 			Elements desc_p = desc_classes.get(0).getElementsByTag("p");
 			String description = desc_p.get(0).text();
+			desc.setText(description);
 			//System.out.println("Description : "+description);
 
 			//IMDB & ROTTEN TOMATOES RATINGS
 			Elements rating_classes = doc.getElementsByClass("css-xmin1q ey4ir3j3");
 			String imdb_rating = rating_classes.get(0).text();
+			rating.setText(imdb_rating);
 			//System.out.println("IMDB: "+imdb_rating);
 
 			//POSTER
@@ -164,13 +180,15 @@ public class listitem_expanded_activity extends AppCompatActivity
 			String poster_link = poster_img.get(0).attr("src");
 			int lastIndex = poster_link.lastIndexOf('/');
 			String substr = poster_link.substring(0,lastIndex);
-            Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL(substr).getContent());
-            imageView.setImageBitmap(bitmap);
+			Picasso.get().load(substr+"/poster-780.jpg").into(imageView);
+            //Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL(substr+"/poster-780.jpg").getContent());
+            //imageView.setImageBitmap(bitmap);
             //System.out.println("Image url : "+substr+"/poster-780.jpg");
 
 			//STREAMING ON
 			Elements availon_classes = doc.getElementsByClass("css-3g9tm3 e1udhou113");
 			String avail_on = availon_classes.get(0).text();
+			watchon.setText(avail_on);
 			//System.out.println("Streaming on : "+avail_on);
 
 			//WATCH LINK
