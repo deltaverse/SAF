@@ -2,12 +2,13 @@ package org.deltaverse.saf;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.jsoup.Jsoup;
@@ -16,11 +17,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class listitem_expanded_activity extends AppCompatActivity
 {
-	ListView listView;
+    ImageView imageView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -32,10 +35,26 @@ public class listitem_expanded_activity extends AppCompatActivity
 	public void init()
 	{
 		//Final url i.e., to be appended to base url
-		String url = parse_json();
+		final String url = parse_json();
 		//Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
-		show_url_data(url);
+        Thread thread = new Thread(new Runnable() {
 
+            @Override
+            public void run()
+            {
+                try
+                {
+                    show_url_data(url);
+                }
+
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
 	}
 
 	public String parse_json()
@@ -95,8 +114,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 	public void show_url_data(String base_url)
 	{
-		listView = findViewById(R.id.listview);
-		ArrayList<String> arrayList = new ArrayList<>();
+        imageView = findViewById(R.id.imageView2);
 		try
 		{
 			//TITLE
@@ -105,7 +123,6 @@ public class listitem_expanded_activity extends AppCompatActivity
 			Elements title_h1 = title_classes.get(0).getElementsByTag("h1");
 			String title_name = title_h1.get(0).text();
 			//System.out.println("Title : "+title_name);
-			arrayList.add("Title : "+title_name);
 
 			//GENRE & YEAR
 			Elements genreyear_classes = doc.getElementsByClass("css-jmgx9u");
@@ -117,16 +134,13 @@ public class listitem_expanded_activity extends AppCompatActivity
 					if (i==0)
 					{
 						//System.out.println("GENRE: ");
-						arrayList.add("GENRE : ");
 					}
 					//System.out.println(genreyear_classes.get(i).text());
-					arrayList.add(genreyear_classes.get(i).text());
 				}
 
 				else
 				{
 					//System.out.println("YEAR: "+genreyear_classes.get(i).text());
-					arrayList.add("YEAR: "+genreyear_classes.get(i).text());
 				}
 			}
 
@@ -138,13 +152,11 @@ public class listitem_expanded_activity extends AppCompatActivity
 			Elements desc_p = desc_classes.get(0).getElementsByTag("p");
 			String description = desc_p.get(0).text();
 			//System.out.println("Description : "+description);
-			arrayList.add("Description : "+description);
 
 			//IMDB & ROTTEN TOMATOES RATINGS
 			Elements rating_classes = doc.getElementsByClass("css-xmin1q ey4ir3j3");
 			String imdb_rating = rating_classes.get(0).text();
 			//System.out.println("IMDB: "+imdb_rating);
-			arrayList.add("IMDB: "+imdb_rating);
 
 			//POSTER
 			Elements poster_classes = doc.getElementsByClass("css-b4kcmh e1181ybh0");
@@ -152,28 +164,26 @@ public class listitem_expanded_activity extends AppCompatActivity
 			String poster_link = poster_img.get(0).attr("src");
 			int lastIndex = poster_link.lastIndexOf('/');
 			String substr = poster_link.substring(0,lastIndex);
-			//System.out.println("Image url : "+substr+"/poster-780.jpg");
-			arrayList.add("Image url : "+substr+"/poster-780.jpg");
+            Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL(substr).getContent());
+            imageView.setImageBitmap(bitmap);
+            //System.out.println("Image url : "+substr+"/poster-780.jpg");
 
 			//STREAMING ON
 			Elements availon_classes = doc.getElementsByClass("css-3g9tm3 e1udhou113");
 			String avail_on = availon_classes.get(0).text();
 			//System.out.println("Streaming on : "+avail_on);
-			arrayList.add("Streaming on : "+avail_on);
 
 			//WATCH LINK
 			Elements watchon_classes = doc.getElementsByClass("css-1j38j0s e126mwsw1");
 			Elements watchon_a = watchon_classes.get(0).getElementsByTag("a");
 			String watch_on = watchon_a.get(0).attr("href");
 			//System.out.println("Watch Link : "+watch_on);
-			arrayList.add("Watch Link : "+watch_on);
 
 			//TRAILER
 			Elements trailer_classes = doc.getElementsByClass("css-1cs4y7l euu2a730");
 			Elements trailer_a = trailer_classes.get(1).getElementsByTag("a");
 			String trailer_link = trailer_a.get(0).attr("href");
 			//System.out.println("Trailer Link : "+trailer_link);
-			arrayList.add("Trailer Link : "+trailer_link);
 
 			//RENT & BUY (RENT & BUY IS ON A MODAL WINDOW | JSOUP CANT FETCH HTML AFTER EXECUTING JS)
             /*Elements rentbuyname_classes = doc.getElementsByClass("css-18xrnt0 e156vy7w13");
@@ -211,15 +221,12 @@ public class listitem_expanded_activity extends AppCompatActivity
 					Elements cast_img = cast_class.get(0).getElementsByTag("img");
 					String castimg_link = cast_img.get(0).attr("src");
 					//System.out.println("cast image: " + castimg_link);
-					arrayList.add("cast image: " + castimg_link);
 					Elements cast_nameclass = e.getElementsByTag("h3");
 					String cast_name = cast_nameclass.get(0).text();
 					//System.out.println("cast name: " + cast_name);
-					arrayList.add("cast name: " + cast_name);
 					Elements cast_descclass = e.getElementsByTag("h4");
 					String desc_name = cast_descclass.get(0).text();
 					//System.out.println("cast role: " + desc_name);
-					arrayList.add("cast role: " + desc_name);
 				}
 			}
 
@@ -233,8 +240,5 @@ public class listitem_expanded_activity extends AppCompatActivity
 		{
 			e.printStackTrace();
 		}
-
-		ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,arrayList);
-		listView.setAdapter(arrayAdapter);
 	}
 }
