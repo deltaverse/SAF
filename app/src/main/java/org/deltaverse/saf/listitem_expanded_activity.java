@@ -244,12 +244,19 @@ public class listitem_expanded_activity extends AppCompatActivity
 				for (Element e : cast_classes) {
 					Elements cast_class = e.getElementsByClass("css-b4kcmh e1181ybh0");
 					Elements cast_img = cast_class.get(0).getElementsByTag("img");
-					String castimg_link = cast_img.get(0).attr("src");
-					ImageView imgView = new ImageView(this);
-					imgView.setId(i);
-					imgView.setPadding(2, 2, 2, 2);
-					Picasso.get().load(castimg_link).into(imgView);
-					layout.addView(imgView);
+					final String castimg_link = cast_img.get(0).attr("src");
+					final ImageView imgView = new ImageView(this);
+					runOnUiThread(new Runnable() {
+
+						@Override
+						public void run() {
+							int i=0;
+							imgView.setId(++i);
+							imgView.setPadding(2, 2, 2, 2);
+							Picasso.get().load(castimg_link).into(imgView);
+							layout.addView(imgView);
+						}
+					});
 					//System.out.println("cast image: " + castimg_link);
 					Elements cast_nameclass = e.getElementsByTag("h3");
 					String cast_name = cast_nameclass.get(0).text();
