@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,6 +24,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.Calendar;
 
 public class listitem_expanded_activity extends AppCompatActivity
 {
@@ -164,7 +167,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 					s.append(genreyear_classes.get(i).text());
 				}
 			}
-			year.setText(s);
+//			year.setText(s);
 
 			//DURATION (NOT ABLE TO IMPLEMENT COZ INDEX IS DIFFERENT FOR DIFFERENT MOVIES)
 
@@ -242,10 +245,14 @@ public class listitem_expanded_activity extends AppCompatActivity
 				//CAST & CREW
 				Elements cast_classes = doc.getElementsByClass("css-1baulvz e1yfir8f5");
 				for (Element e : cast_classes) {
+					LayoutInflater layoutInflater = LayoutInflater.from(getApplicationContext());
+					final View rootview = layoutInflater.inflate(R.layout.test_layout,layout,false);
+
 					Elements cast_class = e.getElementsByClass("css-b4kcmh e1181ybh0");
 					Elements cast_img = cast_class.get(0).getElementsByTag("img");
 					final String castimg_link = cast_img.get(0).attr("src");
 					final ImageView imgView = new ImageView(this);
+					final TextView textView = (TextView) rootview.findViewById(R.id.test_textview);
 					runOnUiThread(new Runnable() {
 
 						@Override
@@ -255,6 +262,8 @@ public class listitem_expanded_activity extends AppCompatActivity
 							imgView.setPadding(2, 2, 2, 2);
 							Picasso.get().load(castimg_link).into(imgView);
 							layout.addView(imgView);
+							textView.setText(String.valueOf(Calendar.getInstance().getTimeInMillis()));
+							layout.addView(rootview);
 						}
 					});
 					//System.out.println("cast image: " + castimg_link);
