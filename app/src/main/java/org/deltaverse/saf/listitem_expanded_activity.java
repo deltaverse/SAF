@@ -167,7 +167,14 @@ public class listitem_expanded_activity extends AppCompatActivity
 					s.append(genreyear_classes.get(i).text());
 				}
 			}
-//			year.setText(s);
+			final StringBuilder s1 = s;
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					year.setText(s1);
+				}
+			});
 
 			//DURATION (NOT ABLE TO IMPLEMENT COZ INDEX IS DIFFERENT FOR DIFFERENT MOVIES)
 
@@ -244,35 +251,30 @@ public class listitem_expanded_activity extends AppCompatActivity
 			{
 				//CAST & CREW
 				Elements cast_classes = doc.getElementsByClass("css-1baulvz e1yfir8f5");
+				LayoutInflater layoutInflater = LayoutInflater.from(getApplicationContext());
 				for (Element e : cast_classes) {
-					LayoutInflater layoutInflater = LayoutInflater.from(getApplicationContext());
 					final View rootview = layoutInflater.inflate(R.layout.test_layout,layout,false);
-
+					final ImageView imgView = rootview.findViewById(R.id.cast_image);
+					final TextView textView = rootview.findViewById(R.id.crew_name);
+					final TextView textView1 = rootview.findViewById(R.id.crew_role);
 					Elements cast_class = e.getElementsByClass("css-b4kcmh e1181ybh0");
 					Elements cast_img = cast_class.get(0).getElementsByTag("img");
 					final String castimg_link = cast_img.get(0).attr("src");
-					final ImageView imgView = new ImageView(this);
-					final TextView textView = (TextView) rootview.findViewById(R.id.test_textview);
+					Elements cast_nameclass = e.getElementsByTag("h3");
+					final String cast_name = cast_nameclass.get(0).text();
+					Elements cast_descclass = e.getElementsByTag("h4");
+					final String desc_name = cast_descclass.get(0).text();
 					runOnUiThread(new Runnable() {
 
 						@Override
 						public void run() {
-							int i=0;
-							imgView.setId(++i);
 							imgView.setPadding(2, 2, 2, 2);
 							Picasso.get().load(castimg_link).into(imgView);
-							layout.addView(imgView);
-							textView.setText(String.valueOf(Calendar.getInstance().getTimeInMillis()));
+							textView.setText(cast_name);
+							textView1.setText(desc_name);
 							layout.addView(rootview);
 						}
 					});
-					//System.out.println("cast image: " + castimg_link);
-					Elements cast_nameclass = e.getElementsByTag("h3");
-					String cast_name = cast_nameclass.get(0).text();
-					//System.out.println("cast name: " + cast_name);
-					Elements cast_descclass = e.getElementsByTag("h4");
-					String desc_name = cast_descclass.get(0).text();
-					//System.out.println("cast role: " + desc_name);
 				}
 			}
 
