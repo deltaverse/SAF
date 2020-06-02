@@ -2,32 +2,43 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:id="@+id/cast_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/crew_name"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+       />
 
     <TextView
         android:id="@+id/crew_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/crew_role"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/cast_image"/>
+        android:text="crewname"
+        android:textSize="12sp"
+        android:textColor="@color/semi_white"
+
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/cast_image"
+        app:layout_constraintStart_toStartOf="@id/cast_image"
+        app:layout_constraintTop_toBottomOf="@id/cast_image" />
 
     <TextView
         android:id="@+id/crew_role"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/crew_name"/>
+        android:text="crewrole"
+        android:textColor="@color/semi_white"
+
+        android:textSize="9sp"
+       app:layout_constraintTop_toBottomOf="@id/crew_name"
+        app:layout_constraintStart_toStartOf="@id/cast_image"
+        app:layout_constraintEnd_toEndOf="@id/cast_image"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

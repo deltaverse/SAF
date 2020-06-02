@@ -26,14 +26,17 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.Calendar;
 
+import jp.wasabeef.picasso.transformations.BlurTransformation;
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+
 public class listitem_expanded_activity extends AppCompatActivity
 {
-    ImageView imageView;
+    ImageView imageView,background;
     TextView title;
     TextView year;
     TextView rating;
     Button watchon;
-    EditText desc;
+    TextView desc;
     Button trailer;
     LinearLayout layout;
 	@Override
@@ -126,6 +129,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 	public void show_url_data(String base_url)
 	{
+		background = findViewById(R.id.background);
         imageView = findViewById(R.id.poster);
         title = findViewById(R.id.title);
 		year = findViewById(R.id.year);
@@ -213,6 +217,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 				@Override
 				public void run() {
 					Picasso.get().load(substr+"/poster-780.jpg").into(imageView);
+					Picasso.get().load(substr+"/poster-780.jpg").transform(new BlurTransformation(getApplicationContext(), 69, 1)).into(background);
 				}
 			});
 
@@ -268,8 +273,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 						@Override
 						public void run() {
-							imgView.setPadding(2, 2, 2, 2);
-							Picasso.get().load(castimg_link).into(imgView);
+							Picasso.get().load(castimg_link).transform(new CropCircleTransformation()).into(imgView);
 							textView.setText(cast_name);
 							textView1.setText(desc_name);
 							layout.addView(rootview);
