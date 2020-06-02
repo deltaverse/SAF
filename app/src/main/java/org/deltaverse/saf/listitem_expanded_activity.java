@@ -2,10 +2,14 @@ package org.deltaverse.saf;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -27,6 +31,8 @@ public class listitem_expanded_activity extends AppCompatActivity
     TextView rating;
     Button watchon;
     EditText desc;
+    Button trailer;
+    LinearLayout layout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -123,15 +129,24 @@ public class listitem_expanded_activity extends AppCompatActivity
 		rating = findViewById(R.id.rating);
 		desc = findViewById(R.id.desc);
 		watchon = findViewById(R.id.watchon);
+		trailer = findViewById(R.id.trailer);
+		layout = findViewById(R.id.linear);
+		//desc.setEnabled(false);
+		desc.setFocusable(false);
 		try
 		{
 			//TITLE
 			Document doc = Jsoup.connect("https://reelgood.com"+base_url).get();
 			Elements title_classes = doc.getElementsByClass("css-1jw3688 e14injhv6");
 			Elements title_h1 = title_classes.get(0).getElementsByTag("h1");
-			String title_name = title_h1.get(0).text();
-			title.setText(title_name);
-			//System.out.println("Title : "+title_name);
+			final String title_name = title_h1.get(0).text();
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					title.setText(title_name);
+				}
+			});
 
 			//GENRE & YEAR
 			Elements genreyear_classes = doc.getElementsByClass("css-jmgx9u");
@@ -141,18 +156,11 @@ public class listitem_expanded_activity extends AppCompatActivity
 			{
 				if (i!=2)
 				{
-					if (i==0)
-					{
-						//System.out.println("GENRE: ");
-						s.append("GENRE : ");
-					}
-					//System.out.println(genreyear_classes.get(i).text());
-					s.append(genreyear_classes.get(i).text());
+					s.append(genreyear_classes.get(i).text()).append(",");
 				}
 
 				else
 				{
-					//System.out.println("YEAR: "+genreyear_classes.get(i).text());
 					s.append(genreyear_classes.get(i).text());
 				}
 			}
@@ -164,71 +172,70 @@ public class listitem_expanded_activity extends AppCompatActivity
 			//DESCRIPTION
 			Elements desc_classes = doc.getElementsByClass("css-zzy0ri e50tfam1");
 			Elements desc_p = desc_classes.get(0).getElementsByTag("p");
-			String description = desc_p.get(0).text();
-			desc.setText(description);
-			//System.out.println("Description : "+description);
+			final String description = desc_p.get(0).text();
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					desc.setText(description);
+				}
+			});
 
 			//IMDB & ROTTEN TOMATOES RATINGS
 			Elements rating_classes = doc.getElementsByClass("css-xmin1q ey4ir3j3");
-			String imdb_rating = rating_classes.get(0).text();
-			rating.setText(imdb_rating);
-			//System.out.println("IMDB: "+imdb_rating);
+			final String imdb_rating = rating_classes.get(0).text();
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					rating.setText("IMDB : "+imdb_rating);
+				}
+			});
 
 			//POSTER
 			Elements poster_classes = doc.getElementsByClass("css-b4kcmh e1181ybh0");
 			Elements poster_img = poster_classes.get(0).getElementsByTag("img");
 			String poster_link = poster_img.get(0).attr("src");
 			int lastIndex = poster_link.lastIndexOf('/');
-			String substr = poster_link.substring(0,lastIndex);
-			Picasso.get().load(substr+"/poster-780.jpg").into(imageView);
-            //Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL(substr+"/poster-780.jpg").getContent());
-            //imageView.setImageBitmap(bitmap);
-            //System.out.println("Image url : "+substr+"/poster-780.jpg");
+			final String substr = poster_link.substring(0,lastIndex);
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					Picasso.get().load(substr+"/poster-780.jpg").into(imageView);
+				}
+			});
 
 			//STREAMING ON
 			Elements availon_classes = doc.getElementsByClass("css-3g9tm3 e1udhou113");
-			String avail_on = availon_classes.get(0).text();
-			watchon.setText(avail_on);
-			//System.out.println("Streaming on : "+avail_on);
+			final String avail_on = availon_classes.get(0).text();
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					watchon.setText(avail_on);
+				}
+			});
 
 			//WATCH LINK
 			Elements watchon_classes = doc.getElementsByClass("css-1j38j0s e126mwsw1");
 			Elements watchon_a = watchon_classes.get(0).getElementsByTag("a");
-			String watch_on = watchon_a.get(0).attr("href");
-			//System.out.println("Watch Link : "+watch_on);
+			final String watch_on = watchon_a.get(0).attr("href");
+			watchon.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					goToUrl(watch_on);
+				}
+			});
 
 			//TRAILER
 			Elements trailer_classes = doc.getElementsByClass("css-1cs4y7l euu2a730");
 			Elements trailer_a = trailer_classes.get(1).getElementsByTag("a");
-			String trailer_link = trailer_a.get(0).attr("href");
-			//System.out.println("Trailer Link : "+trailer_link);
-
-			//RENT & BUY (RENT & BUY IS ON A MODAL WINDOW | JSOUP CANT FETCH HTML AFTER EXECUTING JS)
-            /*Elements rentbuyname_classes = doc.getElementsByClass("css-18xrnt0 e156vy7w13");
-            Elements rentbuycost_classes = doc.getElementsByClass("css-185a89x e156vy7w14");
-            int i;
-            int element_count = 0;
-            for (Element e:rentbuyname_classes)
-            {
-                element_count++;
-            }
-            for (i=0;i<element_count;i++)
-            {
-                System.out.println(rentbuyname_classes.get(i).text());
-                System.out.println(rentbuycost_classes.get(i).text());
-            }*/
-
-			//STREAMING PLATFORM LOGO (REELGOOD IMPLEMENTED DIFFERENTLY FOR DIFFERENT STREAMING SERVICES)
-            /*Document doc2 = Jsoup.connect(base_url+avail_on).get();
-            Elements stremlog_classes = doc2.getElementsByClass("ivg-i PZPZlf");
-            Elements stremlog_img = stremlog_classes.get(0).getElementsByTag("img");
-            String stream_logo = stremlog_img.get(0).attr("src");
-            System.out.println("Streaming Platform Logo : "+stream_logo);*/
-
-			//Rating Platform Logo (LOGO SRC URL IS IN DIFFERENT FORMAT WHICH IS MAKING THINGS HARDER)
-            /*Elements ratlog_classes = doc.getElementsByClass("css-cl7hpe");
-            String rating_logo = ratlog_classes.get(1).attr("src");
-            System.out.println("Rating Platform Logo : "+rating_logo);*/
+			final String trailer_link = trailer_a.get(0).attr("href");
+			trailer.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					goToUrl(trailer_link);
+				}
+			});
 
 			try
 			{
@@ -238,6 +245,11 @@ public class listitem_expanded_activity extends AppCompatActivity
 					Elements cast_class = e.getElementsByClass("css-b4kcmh e1181ybh0");
 					Elements cast_img = cast_class.get(0).getElementsByTag("img");
 					String castimg_link = cast_img.get(0).attr("src");
+					ImageView imgView = new ImageView(this);
+					imgView.setId(i);
+					imgView.setPadding(2, 2, 2, 2);
+					Picasso.get().load(castimg_link).into(imgView);
+					layout.addView(imgView);
 					//System.out.println("cast image: " + castimg_link);
 					Elements cast_nameclass = e.getElementsByTag("h3");
 					String cast_name = cast_nameclass.get(0).text();
@@ -258,5 +270,11 @@ public class listitem_expanded_activity extends AppCompatActivity
 		{
 			e.printStackTrace();
 		}
+	}
+
+	private void goToUrl (String url) {
+		Uri uriUrl = Uri.parse(url);
+		Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+		startActivity(launchBrowser);
 	}
 }
