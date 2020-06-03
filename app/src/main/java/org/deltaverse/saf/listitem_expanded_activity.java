@@ -1,8 +1,10 @@
 package org.deltaverse.saf;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +22,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import androidx.appcompat.app.AppCompatActivity;
 import jp.wasabeef.picasso.transformations.BlurTransformation;
@@ -106,18 +109,27 @@ public class listitem_expanded_activity extends AppCompatActivity
 		for(String split : splits)
 		{
 			split = split.trim();
+			Log.i("to_url",split);
+
 		}
+		Log.i("to_url",String.valueOf(splits.length));
 		String s="";
 		for(int i = 0 ; i < splits.length-1 ; i ++)
 		{
 			if(splits[i].length()>0)
 			{
 				splits[i]=splits[i]+"-";
-				s = s+ splits[i];
+				s = s + splits[i];
+
+
 			}
 		}
 		s = s + splits[splits.length-1];
-		s = "/"+s.replaceAll(":","").toLowerCase()+"-"+release_date.split("-")[0];
+		s = "/"+s
+				.replaceAll(":","")
+				.replaceAll("…","")
+				.replaceAll("\\.","")
+				.toLowerCase()+"-"+release_date.split("-")[0];
 		return  s;
 	}
 
@@ -426,6 +438,10 @@ public class listitem_expanded_activity extends AppCompatActivity
 	private void goToUrl (String url) {
 		Uri uriUrl = Uri.parse(url);
 		Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
-		startActivity(launchBrowser);
+		try{
+			startActivity(launchBrowser);
+		}catch (ActivityNotFoundException e){
+			Toast.makeText(getApplicationContext(),"No application is found to perform that action!"+url,Toast.LENGTH_SHORT).show();
+		}
 	}
 }
