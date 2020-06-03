@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -136,112 +137,225 @@ public class listitem_expanded_activity extends AppCompatActivity
 			//TITLE
 			Document doc = Jsoup.connect("https://reelgood.com"+base_url).get();
 			Elements title_classes = doc.getElementsByClass("css-1jw3688 e14injhv6");
-			Elements title_h1 = title_classes.get(0).getElementsByTag("h1");
-			final String title_name = title_h1.get(0).text();
-			runOnUiThread(new Runnable() {
+			if (title_classes.size()!=0)
+			{
+				Elements title_h1 = title_classes.get(0).getElementsByTag("h1");
+				final String title_name = title_h1.get(0).text();
+				runOnUiThread(new Runnable() {
 
-				@Override
-				public void run() {
-					title.setText(title_name);
-				}
-			});
+					@Override
+					public void run() {
+						title.setText(title_name);
+					}
+				});
+			}
+			else
+			{
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						title.setText("NA");
+					}
+				});
+			}
 
 			//GENRE & YEAR
 			Elements genreyear_classes = doc.getElementsByClass("css-jmgx9u");
-			int i;
-			StringBuilder s = new StringBuilder();
-			for (i=0;i<3;i++)
+			if(genreyear_classes.size()!=0)
 			{
-				if (i!=2)
+				int i;
+				StringBuilder s = new StringBuilder();
+				for (i=0;i<3;i++)
 				{
-					s.append(genreyear_classes.get(i).text()).append(",");
-				}
+					if (i!=2)
+					{
+						s.append(genreyear_classes.get(i).text()).append(",");
+					}
 
-				else
-				{
-					s.append(genreyear_classes.get(i).text());
+					else
+					{
+						s.append(genreyear_classes.get(i).text());
+					}
 				}
+				final StringBuilder s1 = s;
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						year.setText(s1);
+					}
+				});
 			}
-			final StringBuilder s1 = s;
-			runOnUiThread(new Runnable() {
+			else
+			{
+				runOnUiThread(new Runnable() {
 
-				@Override
-				public void run() {
-					year.setText(s1);
-				}
-			});
+					@Override
+					public void run() {
+						year.setText("NA");
+					}
+				});
+			}
 
 			//DURATION (NOT ABLE TO IMPLEMENT COZ INDEX IS DIFFERENT FOR DIFFERENT MOVIES)
 
 
 			//DESCRIPTION
 			Elements desc_classes = doc.getElementsByClass("css-zzy0ri e50tfam1");
-			Elements desc_p = desc_classes.get(0).getElementsByTag("p");
-			final String description = desc_p.get(0).text();
-			runOnUiThread(new Runnable() {
+			if(desc_classes.size()!=0)
+			{
+				Elements desc_p = desc_classes.get(0).getElementsByTag("p");
+				final String description = desc_p.get(0).text();
+				runOnUiThread(new Runnable() {
 
-				@Override
-				public void run() {
-					desc.setText(description);
-				}
-			});
+					@Override
+					public void run() {
+						desc.setText(description);
+					}
+				});
+			}
+			else
+			{
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						desc.setText("NA");
+					}
+				});
+			}
 
 			//IMDB & ROTTEN TOMATOES RATINGS
 			Elements rating_classes = doc.getElementsByClass("css-xmin1q ey4ir3j3");
-			final String imdb_rating = rating_classes.get(0).text();
-			runOnUiThread(new Runnable() {
+			if(rating_classes.size()!=0)
+			{
+				final String imdb_rating = rating_classes.get(0).text();
+				runOnUiThread(new Runnable() {
 
-				@Override
-				public void run() {
-					rating.setText("IMDB : "+imdb_rating);
-				}
-			});
+					@Override
+					public void run() {
+						rating.setText("IMDB : "+imdb_rating);
+					}
+				});
+			}
+			else
+			{
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						rating.setText("NA");
+					}
+				});
+			}
+
 
 			//POSTER
 			Elements poster_classes = doc.getElementsByClass("css-b4kcmh e1181ybh0");
-			Elements poster_img = poster_classes.get(0).getElementsByTag("img");
-			String poster_link = poster_img.get(0).attr("src");
-			int lastIndex = poster_link.lastIndexOf('/');
-			final String substr = poster_link.substring(0,lastIndex);
-			runOnUiThread(new Runnable() {
+			if(poster_classes.size()!=0)
+			{
+				Elements poster_img = poster_classes.get(0).getElementsByTag("img");
+				String poster_link = poster_img.get(0).attr("src");
+				int lastIndex = poster_link.lastIndexOf('/');
+				final String substr = poster_link.substring(0,lastIndex);
+				runOnUiThread(new Runnable() {
 
-				@Override
-				public void run() {
-					Picasso.get().load(substr+"/poster-780.jpg").into(imageView);
-					Picasso.get().load(substr+"/poster-780.jpg").transform(new BlurTransformation(getApplicationContext(), 69, 1)).into(background);
-				}
-			});
+					@Override
+					public void run() {
+						Picasso.get().load(substr+"/poster-780.jpg").into(imageView);
+						Picasso.get().load(substr+"/poster-780.jpg").transform(new BlurTransformation(getApplicationContext(), 69, 1)).into(background);
+					}
+				});
+			}
+			else
+			{
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						Toast. makeText(getApplicationContext(),"Poster Unavailable",Toast. LENGTH_SHORT).show();
+					}
+				});
+			}
+
 
 			//STREAMING ON
 			Elements availon_classes = doc.getElementsByClass("css-3g9tm3 e1udhou113");
-			final String avail_on = availon_classes.get(0).text();
-			runOnUiThread(new Runnable() {
+			if (availon_classes.size()!=0)
+			{
+				final String avail_on = availon_classes.get(0).text();
+				runOnUiThread(new Runnable() {
 
-				@Override
-				public void run() {
-					watchon.setText(avail_on);
-				}
-			});
+					@Override
+					public void run() {
+						watchon.setText(avail_on);
+					}
+				});
+			}
+			else
+			{
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						watchon.setText("NA");
+					}
+				});
+			}
 
 			//WATCH LINK
 			Elements watchon_classes = doc.getElementsByClass("css-1j38j0s e126mwsw1");
-			Elements watchon_a = watchon_classes.get(0).getElementsByTag("a");
-			final String watch_on = watchon_a.get(0).attr("href");
-			watchon.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View v) {
-					goToUrl(watch_on);
+			if(watchon_classes.size()!=0)
+			{
+				Elements watchon_a = watchon_classes.get(0).getElementsByTag("a");
+				if(watchon_a.size()!=0)
+				{
+					final String watch_on = watchon_a.get(0).attr("href");
+					watchon.setOnClickListener(new View.OnClickListener() {
+						public void onClick(View v) {
+							goToUrl(watch_on);
+						}
+					});
 				}
-			});
+			}
+			else
+			{
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						watchon.setText("NA");
+					}
+				});
+				watchon.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View v) {
+						Toast. makeText(getApplicationContext(),"Watch Link Unavailable",Toast. LENGTH_SHORT).show();
+					}
+				});
+			}
 
 			//TRAILER
 			Elements trailer_classes = doc.getElementsByClass("css-1cs4y7l euu2a730");
-			Elements trailer_a = trailer_classes.get(1).getElementsByTag("a");
-			final String trailer_link = trailer_a.get(0).attr("href");
-			trailer.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View v) {
-					goToUrl(trailer_link);
-				}
-			});
+			if(trailer_classes.size()!=0)
+			{
+				Elements trailer_a = trailer_classes.get(1).getElementsByTag("a");
+				final String trailer_link = trailer_a.get(0).attr("href");
+				trailer.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View v) {
+						goToUrl(trailer_link);
+					}
+				});
+			}
+			else
+			{
+				trailer.setText("NA");
+				trailer.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View v) {
+						goToUrl("Trailer Link Unavailable");
+					}
+				});
+			}
 
 			try
 			{
@@ -253,20 +367,44 @@ public class listitem_expanded_activity extends AppCompatActivity
 					final ImageView imgView = rootview.findViewById(R.id.cast_image);
 					final TextView textView = rootview.findViewById(R.id.crew_name);
 					final TextView textView1 = rootview.findViewById(R.id.crew_role);
+
+					String castimg_link = "";
+					String desc_name = "";
+
 					Elements cast_class = e.getElementsByClass("css-b4kcmh e1181ybh0");
-					Elements cast_img = cast_class.get(0).getElementsByTag("img");
-					final String castimg_link = cast_img.get(0).attr("src");
+					if(cast_class.size()!=0)
+					{
+						Elements cast_img = cast_class.get(0).getElementsByTag("img");
+						castimg_link = cast_img.get(0).attr("src");
+					}
+					else
+					{
+						castimg_link = "https://www.abbabailbonds.com/wp-content/uploads/2019/10/User-icon.png";
+					}
+
 					Elements cast_nameclass = e.getElementsByTag("h3");
 					final String cast_name = cast_nameclass.get(0).text();
+
 					Elements cast_descclass = e.getElementsByTag("h4");
-					final String desc_name = cast_descclass.get(0).text();
+					if(cast_descclass.size()!=0)
+					{
+						desc_name = cast_descclass.get(0).text();
+					}
+					else
+					{
+						desc_name = "";
+					}
+
+					final String finaldesc_name = desc_name;
+					final String finalCastimg_link = castimg_link;
+
 					runOnUiThread(new Runnable() {
 
 						@Override
 						public void run() {
-							Picasso.get().load(castimg_link).transform(new CropCircleTransformation()).into(imgView);
+							Picasso.get().load(finalCastimg_link).transform(new CropCircleTransformation()).into(imgView);
 							textView.setText(cast_name);
-							textView1.setText(desc_name);
+							textView1.setText(finaldesc_name);
 							layout.addView(rootview);
 						}
 					});
