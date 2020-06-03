@@ -1,15 +1,11 @@
 package org.deltaverse.saf;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,15 +13,14 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.Calendar;
 
+import androidx.appcompat.app.AppCompatActivity;
 import jp.wasabeef.picasso.transformations.BlurTransformation;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
@@ -49,9 +44,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 	public void init()
 	{
-		//Final url i.e., to be appended to base url
 		final String url = parse_json();
-		//Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
         Thread thread = new Thread(new Runnable() {
 
             @Override
@@ -138,8 +131,6 @@ public class listitem_expanded_activity extends AppCompatActivity
 		watchon = findViewById(R.id.watchon);
 		trailer = findViewById(R.id.trailer);
 		layout = findViewById(R.id.linear);
-		//desc.setEnabled(false);
-		desc.setFocusable(false);
 		try
 		{
 			//TITLE
