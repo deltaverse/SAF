@@ -167,7 +167,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 					@Override
 					public void run() {
-						title.setText("NA");
+						title.setText("TITLE : N/A");
 					}
 				});
 			}
@@ -205,13 +205,10 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 					@Override
 					public void run() {
-						year.setText("NA");
+						year.setText("GENRE : N/A");
 					}
 				});
 			}
-
-			//DURATION (NOT ABLE TO IMPLEMENT COZ INDEX IS DIFFERENT FOR DIFFERENT MOVIES)
-
 
 			//DESCRIPTION
 			Elements desc_classes = doc.getElementsByClass("css-zzy0ri e50tfam1");
@@ -233,7 +230,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 					@Override
 					public void run() {
-						desc.setText("NA");
+						desc.setText("DESCRIPTION : N/A");
 					}
 				});
 			}
@@ -257,7 +254,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 					@Override
 					public void run() {
-						rating.setText("NA");
+						rating.setText("IMDB : N/A");
 					}
 				});
 			}
@@ -311,7 +308,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 					@Override
 					public void run() {
-						watchon.setText("NA");
+						watchon.setText("N/A");
 					}
 				});
 			}
@@ -326,7 +323,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 					final String watch_on = watchon_a.get(0).attr("href");
 					watchon.setOnClickListener(new View.OnClickListener() {
 						public void onClick(View v) {
-							goToUrl(watch_on);
+						    goToUrl(watch_on);
 						}
 					});
 				}
@@ -336,7 +333,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 						@Override
 						public void run() {
-							watchon.setText("NA");
+							watchon.setText("N/A");
 						}
 					});
 					watchon.setOnClickListener(new View.OnClickListener() {
@@ -352,7 +349,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 					@Override
 					public void run() {
-						watchon.setText("NA");
+						watchon.setText("N/A");
 					}
 				});
 				watchon.setOnClickListener(new View.OnClickListener() {
@@ -376,7 +373,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 			}
 			else
 			{
-				trailer.setText("NA");
+				trailer.setText("N/A");
 				trailer.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
 						goToUrl("Trailer Link Unavailable");
@@ -453,9 +450,12 @@ public class listitem_expanded_activity extends AppCompatActivity
 	private void goToUrl (String url) {
 		Uri uriUrl = Uri.parse(url);
 		Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
-		try{
+		try
+        {
 			startActivity(launchBrowser);
-		}catch (ActivityNotFoundException e){
+		}
+		catch (ActivityNotFoundException e)
+        {
 			Toast.makeText(getApplicationContext(),"Watch Link Unavailable",Toast.LENGTH_SHORT).show();
 		}
 	}
