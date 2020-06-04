@@ -30,8 +30,8 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class listitem_expanded_activity extends AppCompatActivity
 {
-    ImageView imageView,background;
-    TextView title;
+    ImageView imageView,background,background3;
+    TextView title,unavailable;
     TextView year;
     TextView rating;
     Button watchon;
@@ -43,6 +43,10 @@ public class listitem_expanded_activity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_listitem_expanded_activity);
+		background3 = findViewById(R.id.background3);
+		unavailable = findViewById(R.id.unavailable);
+		background3.setVisibility(View.GONE);
+		unavailable.setVisibility(View.GONE);
 		init();
 	}
 
@@ -283,7 +287,8 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 					@Override
 					public void run() {
-						Toast. makeText(getApplicationContext(),"Poster Unavailable",Toast. LENGTH_SHORT).show();
+						background3.setVisibility(View.VISIBLE);
+						unavailable.setVisibility(View.VISIBLE);
 					}
 				});
 			}

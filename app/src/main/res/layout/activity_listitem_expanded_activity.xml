@@ -145,4 +145,30 @@
     </HorizontalScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView></androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+
+    <ImageView
+        android:id="@+id/background3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/blackbg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/unavailable"
+        android:layout_width="242dp"
+        android:layout_height="18dp"
+        android:autoText="false"
+        android:capitalize="none"
+        android:text="                Title Unavailable :("
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColorLink="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
