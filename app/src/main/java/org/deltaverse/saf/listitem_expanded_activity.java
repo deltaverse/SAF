@@ -276,7 +276,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 					@Override
 					public void run() {
 						Picasso.get().load(substr+"/poster-780.jpg").into(imageView);
-						Picasso.get().load(substr+"/poster-780.jpg").transform(new BlurTransformation(getApplicationContext(), 69, 1)).into(background);
+						Picasso.get().load(substr+"/poster-780.jpg").transform(new BlurTransformation(getApplicationContext(), 45, 1)).into(background);
 					}
 				});
 			}
@@ -327,6 +327,21 @@ public class listitem_expanded_activity extends AppCompatActivity
 					watchon.setOnClickListener(new View.OnClickListener() {
 						public void onClick(View v) {
 							goToUrl(watch_on);
+						}
+					});
+				}
+				else
+				{
+					runOnUiThread(new Runnable() {
+
+						@Override
+						public void run() {
+							watchon.setText("NA");
+						}
+					});
+					watchon.setOnClickListener(new View.OnClickListener() {
+						public void onClick(View v) {
+							Toast. makeText(getApplicationContext(),"Watch Link Unavailable",Toast. LENGTH_SHORT).show();
 						}
 					});
 				}
@@ -441,7 +456,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 		try{
 			startActivity(launchBrowser);
 		}catch (ActivityNotFoundException e){
-			Toast.makeText(getApplicationContext(),"No application is found to perform that action!"+url,Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(),"Watch Link Unavailable",Toast.LENGTH_SHORT).show();
 		}
 	}
 }
