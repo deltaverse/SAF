@@ -182,18 +182,37 @@ public class listitem_expanded_activity extends AppCompatActivity
 			{
 				int i;
 				StringBuilder s = new StringBuilder();
-				for (i=0;i<3;i++)
+				if(genreyear_classes.size()!=2)
 				{
-					if (i!=2)
+					for (i=0;i<3;i++)
 					{
-						s.append(genreyear_classes.get(i).text()).append(",");
-					}
+						if (i!=2)
+						{
+							s.append(genreyear_classes.get(i).text()).append(",");
+						}
 
-					else
-					{
-						s.append(genreyear_classes.get(i).text());
+						else
+						{
+							s.append(genreyear_classes.get(i).text());
+						}
 					}
 				}
+				else
+				{
+					for (i=0;i<2;i++)
+					{
+						if (i!=1)
+						{
+							s.append(genreyear_classes.get(i).text()).append(",");
+						}
+
+						else
+						{
+							s.append(genreyear_classes.get(i).text());
+						}
+					}
+				}
+
 				final StringBuilder s1 = s;
 				runOnUiThread(new Runnable() {
 
