@@ -373,7 +373,13 @@ public class listitem_expanded_activity extends AppCompatActivity
 			}
 			else
 			{
-				trailer.setText("N/A");
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						trailer.setText("N/A");
+					}
+				});
 				trailer.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
 						goToUrl("Trailer Link Unavailable");
