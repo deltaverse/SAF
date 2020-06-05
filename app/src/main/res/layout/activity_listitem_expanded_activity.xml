@@ -87,15 +87,14 @@
         android:id="@+id/watchon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:background="@drawable/button_bg"
         android:padding="6dp"
         android:paddingStart="27dp"
         android:paddingEnd="27dp"
-        android:background="@drawable/button_bg"
-        app:layout_constraintStart_toStartOf="@id/download"
-        app:layout_constraintTop_toTopOf="@id/poster"
+        android:text="WATCH"
         app:layout_constraintBottom_toTopOf="@id/trailer"
-        />
+        app:layout_constraintStart_toStartOf="@id/download"
+        app:layout_constraintTop_toTopOf="@id/poster" />
 
     <Button
         android:id="@+id/trailer"

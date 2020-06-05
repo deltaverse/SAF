@@ -166,6 +166,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 		{
 			//POSTER
 			Document doc = Jsoup.connect("https://reelgood.com"+base_url).get();
+			Document doc2 = Jsoup.connect("https://www.google.com/search?q=watch+"+display_title+"+online").get();
 			Elements poster_classes = doc.getElementsByClass("css-b4kcmh e1181ybh0");
 			if(poster_classes.size()!=0)
 			{
@@ -327,6 +328,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 			//STREAMING ON
 			Elements availon_classes = doc.getElementsByClass("css-3g9tm3 e1udhou113");
+			Elements availon_classes2 = doc2.getElementsByClass("i3LlFf");
 			if (availon_classes.size()!=0)
 			{
 				final String avail_on = availon_classes.get(0).text();
@@ -340,13 +342,27 @@ public class listitem_expanded_activity extends AppCompatActivity
 			}
 			else
 			{
-				runOnUiThread(new Runnable() {
+				if(availon_classes2.size()!=0)
+				{
+					final String avail_on2 = availon_classes2.get(0).text();
+					runOnUiThread(new Runnable() {
 
-					@Override
-					public void run() {
-						watchon.setText("WATCH");
-					}
-				});
+						@Override
+						public void run() {
+							watchon.setText(avail_on2);
+						}
+					});
+				}
+				else
+				{
+					runOnUiThread(new Runnable() {
+
+						@Override
+						public void run() {
+							watchon.setText("WATCH");
+						}
+					});
+				}
 			}
 
 			//DOWNLOAD
@@ -358,6 +374,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 			//WATCH LINK
 			Elements watchon_classes = doc.getElementsByClass("css-1j38j0s e126mwsw1");
+			Elements watchon_classes2 = doc2.getElementsByClass("JkUS4b");
 			if(watchon_classes.size()!=0)
 			{
 				Elements watchon_a = watchon_classes.get(0).getElementsByTag("a");
@@ -367,6 +384,45 @@ public class listitem_expanded_activity extends AppCompatActivity
 					watchon.setOnClickListener(new View.OnClickListener() {
 						public void onClick(View v) {
 						    goToUrl(watch_on);
+						}
+					});
+				}
+				else
+				{
+					if(watchon_classes2.size()!=0)
+					{
+						final String watch_on2 = watchon_classes2.get(0).attr("href");
+						watchon.setOnClickListener(new View.OnClickListener() {
+							public void onClick(View v) {
+								goToUrl(watch_on2);
+							}
+						});
+					}
+					else
+					{
+						runOnUiThread(new Runnable() {
+
+							@Override
+							public void run() {
+								watchon.setText("WATCH");
+							}
+						});
+						watchon.setOnClickListener(new View.OnClickListener() {
+							public void onClick(View v) {
+								Toast. makeText(getApplicationContext(),"Watch Link Unavailable",Toast. LENGTH_SHORT).show();
+							}
+						});
+					}
+				}
+			}
+			else
+			{
+				if(watchon_classes2.size()!=0)
+				{
+					final String watch_on2 = watchon_classes2.get(0).attr("href");
+					watchon.setOnClickListener(new View.OnClickListener() {
+						public void onClick(View v) {
+							goToUrl(watch_on2);
 						}
 					});
 				}
@@ -386,21 +442,6 @@ public class listitem_expanded_activity extends AppCompatActivity
 					});
 				}
 			}
-			else
-			{
-				runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-						watchon.setText("WATCH");
-					}
-				});
-				watchon.setOnClickListener(new View.OnClickListener() {
-					public void onClick(View v) {
-						Toast. makeText(getApplicationContext(),"Watch Link Unavailable",Toast. LENGTH_SHORT).show();
-					}
-				});
-			}
 
 			//TRAILER
 			Elements trailer_classes = doc.getElementsByClass("css-1cs4y7l euu2a730");
@@ -416,16 +457,9 @@ public class listitem_expanded_activity extends AppCompatActivity
 			}
 			else
 			{
-				runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-						trailer.setText("TRAILER");
-					}
-				});
 				trailer.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
-						goToUrl("Trailer Link Unavailable");
+						goToUrl("https://www.youtube.com/results?search_query="+display_title+"+trailer");
 					}
 				});
 			}
