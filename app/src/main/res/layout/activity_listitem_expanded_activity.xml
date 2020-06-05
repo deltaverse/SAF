@@ -60,28 +60,14 @@
         android:id="@+id/year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:maxWidth="100dp"
+        android:padding="6dp"
         android:text="Year"
-        android:maxWidth="100dp"
         android:textColor="@color/semi_white"
-        android:layout_margin="3dp"
-        android:padding="6dp"
-        app:layout_constraintStart_toEndOf="@id/genre"
         app:layout_constraintEnd_toStartOf="@id/rating"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-         />
-    <TextView
-        android:id="@+id/genre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Genre"
-        android:maxWidth="100dp"
-        android:textColor="@color/semi_white"
-        android:layout_margin="3dp"
-        android:padding="6dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/year"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
 
     <TextView

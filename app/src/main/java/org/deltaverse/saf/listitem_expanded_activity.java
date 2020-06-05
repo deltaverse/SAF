@@ -31,7 +31,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 public class listitem_expanded_activity extends AppCompatActivity
 {
     ImageView imageView,background,background3;
-    TextView title,unavailable,year,rating,desc,genre;
+    TextView title,unavailable,year,rating,desc;
     Button watchon,download,trailer;
     LinearLayout layout;
 	@Override
@@ -135,7 +135,6 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 	public void show_url_data(String base_url)
 	{
-		genre = findViewById(R.id.genre);
 		background = findViewById(R.id.background);
         imageView = findViewById(R.id.poster);
         title = findViewById(R.id.title);
