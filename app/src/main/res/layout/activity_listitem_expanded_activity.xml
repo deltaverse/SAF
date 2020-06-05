@@ -29,17 +29,16 @@
     android:id="@+id/imageview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".listitem_expanded_activity"
-    >
+    tools:context=".listitem_expanded_activity">
 
     <ImageView
         android:id="@+id/poster"
         android:layout_width="wrap_content"
         android:layout_height="250dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.211"
+        android:adjustViewBounds="true"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/download"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_launcher_background"
         tools:ignore="VectorDrawableCompat" />
@@ -49,10 +48,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:layout_margin="3dp"
         android:padding="6dp"
         android:textColor="@color/semi_white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/poster"
+        app:layout_constraintStart_toStartOf="@id/poster"
         app:layout_constraintTop_toBottomOf="@+id/poster"
          />
 
@@ -60,27 +60,42 @@
         android:id="@+id/year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="Year"
+        android:maxWidth="100dp"
         android:textColor="@color/semi_white"
+        android:layout_margin="3dp"
         android:padding="6dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/genre"
         app:layout_constraintEnd_toStartOf="@id/rating"
         app:layout_constraintTop_toBottomOf="@+id/title"
          />
+    <TextView
+        android:id="@+id/genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Genre"
+        android:maxWidth="100dp"
+        android:textColor="@color/semi_white"
+        android:layout_margin="3dp"
+        android:padding="6dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/year"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        />
+
 
     <TextView
         android:id="@+id/rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="Rating"
         android:textColor="@color/semi_white"
-
+        android:layout_margin="3dp"
         android:padding="6dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.335"
         app:layout_constraintStart_toEndOf="@+id/year"
         app:layout_constraintTop_toBottomOf="@+id/title"
-        app:layout_constraintVertical_bias="0.385" />
+         />
 
     <Button
         android:id="@+id/watchon"
@@ -91,9 +106,9 @@
         android:paddingStart="27dp"
         android:paddingEnd="27dp"
         android:background="@drawable/button_bg"
-        app:layout_constraintEnd_toStartOf="@id/trailer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/year"
+        app:layout_constraintStart_toStartOf="@id/download"
+        app:layout_constraintTop_toTopOf="@id/poster"
+        app:layout_constraintBottom_toTopOf="@id/trailer"
         />
 
     <Button
@@ -105,40 +120,39 @@
         android:paddingStart="27dp"
         android:paddingEnd="27dp"
         android:background="@drawable/button_bg"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/watchon"
-        app:layout_constraintTop_toBottomOf="@+id/year"
+        app:layout_constraintStart_toStartOf="@id/download"
+        app:layout_constraintTop_toBottomOf="@+id/watchon"
+        app:layout_constraintBottom_toTopOf="@id/download"
         />
 
     <Button
         android:id="@+id/download"
-        android:layout_width="160dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/button_bg"
+        android:layout_marginEnd="8dp"
         android:padding="6dp"
         android:paddingStart="27dp"
         android:paddingEnd="27dp"
         android:text="DOWNLOAD"
-        app:layout_constraintBottom_toTopOf="@+id/rating"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.336"
-        app:layout_constraintStart_toEndOf="@+id/poster"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.451" />
+        app:layout_constraintStart_toEndOf="@id/poster"
+        app:layout_constraintTop_toBottomOf="@id/trailer"
+        app:layout_constraintBottom_toBottomOf="@id/poster"/>
 
     <TextView
         android:id="@+id/desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/semi_white"
-
         android:ems="10"
+        android:layout_margin="3dp"
         android:padding="6dp"
         android:text="Textview"
         android:gravity="start|top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trailer"
+        app:layout_constraintTop_toBottomOf="@id/year"
         />
 
     <HorizontalScrollView
@@ -161,6 +175,7 @@
 </ScrollView>
 
     <ImageView
+        android:visibility="gone"
         android:id="@+id/background3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
