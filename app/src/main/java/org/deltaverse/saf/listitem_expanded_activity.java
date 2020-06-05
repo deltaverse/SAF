@@ -150,8 +150,37 @@ public class listitem_expanded_activity extends AppCompatActivity
 		layout = findViewById(R.id.linear);
 		try
 		{
-			//TITLE
+			//POSTER
 			Document doc = Jsoup.connect("https://reelgood.com"+base_url).get();
+			Elements poster_classes = doc.getElementsByClass("css-b4kcmh e1181ybh0");
+			if(poster_classes.size()!=0)
+			{
+				Elements poster_img = poster_classes.get(0).getElementsByTag("img");
+				String poster_link = poster_img.get(0).attr("src");
+				int lastIndex = poster_link.lastIndexOf('/');
+				final String substr = poster_link.substring(0,lastIndex);
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						Picasso.get().load(substr+"/poster-780.jpg").into(imageView);
+						Picasso.get().load(substr+"/poster-780.jpg").transform(new BlurTransformation(getApplicationContext(), 45, 1)).into(background);
+					}
+				});
+			}
+			else
+			{
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						background3.setVisibility(View.VISIBLE);
+						unavailable.setVisibility(View.VISIBLE);
+					}
+				});
+			}
+
+			//TITLE
 			Elements title_classes = doc.getElementsByClass("css-1jw3688 e14injhv6");
 			if (title_classes.size()!=0)
 			{
@@ -281,37 +310,6 @@ public class listitem_expanded_activity extends AppCompatActivity
 					}
 				});
 			}
-
-
-			//POSTER
-			Elements poster_classes = doc.getElementsByClass("css-b4kcmh e1181ybh0");
-			if(poster_classes.size()!=0)
-			{
-				Elements poster_img = poster_classes.get(0).getElementsByTag("img");
-				String poster_link = poster_img.get(0).attr("src");
-				int lastIndex = poster_link.lastIndexOf('/');
-				final String substr = poster_link.substring(0,lastIndex);
-				runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-						Picasso.get().load(substr+"/poster-780.jpg").into(imageView);
-						Picasso.get().load(substr+"/poster-780.jpg").transform(new BlurTransformation(getApplicationContext(), 45, 1)).into(background);
-					}
-				});
-			}
-			else
-			{
-				runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-						background3.setVisibility(View.VISIBLE);
-						unavailable.setVisibility(View.VISIBLE);
-					}
-				});
-			}
-
 
 			//STREAMING ON
 			Elements availon_classes = doc.getElementsByClass("css-3g9tm3 e1udhou113");
