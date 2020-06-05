@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -30,8 +31,8 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class listitem_expanded_activity extends AppCompatActivity
 {
-    ImageView imageView,background,background3;
-    TextView title,unavailable,year,rating,desc;
+    ImageView imageView,background;
+    TextView title,year,rating,desc;
     Button watchon,download,trailer;
     LinearLayout layout;
 	@Override
@@ -39,10 +40,6 @@ public class listitem_expanded_activity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_listitem_expanded_activity);
-		background3 = findViewById(R.id.background3);
-		unavailable = findViewById(R.id.unavailable);
-		background3.setVisibility(View.GONE);
-		unavailable.setVisibility(View.GONE);
 		init();
 	}
 
@@ -133,8 +130,28 @@ public class listitem_expanded_activity extends AppCompatActivity
 		return  s;
 	}
 
-	public void show_url_data(String base_url)
-	{
+	public void show_url_data(String base_url) throws JSONException {
+		JSONObject jsonObject2 = new JSONObject(getIntent().getStringExtra("data_object"));
+		String media_type = jsonObject2.getString("media_type");
+		final String display_title, release_date;
+		switch (media_type) {
+			case "tv":
+				display_title = jsonObject2.getString("name");
+				release_date = jsonObject2.getString("first_air_date");
+				break;
+			case "movie":
+				display_title = jsonObject2.getString("original_title");
+				release_date = jsonObject2.getString("release_date");
+				break;
+			default:
+				display_title = "";
+				release_date = "";
+				break;
+		}
+		final String description2 = jsonObject2.getString("overview");
+		final String rating2 = jsonObject2.getString("vote_average");
+		final String poster_path = jsonObject2.getString("poster_path");
+
 		background = findViewById(R.id.background);
         imageView = findViewById(R.id.poster);
         title = findViewById(R.id.title);
@@ -171,8 +188,8 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 					@Override
 					public void run() {
-						background3.setVisibility(View.VISIBLE);
-						unavailable.setVisibility(View.VISIBLE);
+						Picasso.get().load("https://image.tmdb.org/t/p/w500"+poster_path).into(imageView);
+						Picasso.get().load("https://image.tmdb.org/t/p/w500"+poster_path).transform(new BlurTransformation(getApplicationContext(), 45, 1)).into(background);
 					}
 				});
 			}
@@ -197,7 +214,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 					@Override
 					public void run() {
-						title.setText("TITLE : N/A");
+						title.setText(display_title);
 					}
 				});
 			}
@@ -254,7 +271,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 					@Override
 					public void run() {
-						year.setText("GENRE : N/A");
+						year.setText("Release data: "+release_date);
 					}
 				});
 			}
@@ -279,7 +296,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 					@Override
 					public void run() {
-						desc.setText("DESCRIPTION : N/A");
+						desc.setText(description2);
 					}
 				});
 			}
@@ -303,7 +320,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 					@Override
 					public void run() {
-						rating.setText("IMDB : N/A");
+						rating.setText("IMDB : "+rating2);
 					}
 				});
 			}
@@ -327,7 +344,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 					@Override
 					public void run() {
-						watchon.setText("N/A");
+						watchon.setText("WATCH");
 					}
 				});
 			}
@@ -359,7 +376,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 						@Override
 						public void run() {
-							watchon.setText("N/A");
+							watchon.setText("WATCH");
 						}
 					});
 					watchon.setOnClickListener(new View.OnClickListener() {
@@ -375,7 +392,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 					@Override
 					public void run() {
-						watchon.setText("N/A");
+						watchon.setText("WATCH");
 					}
 				});
 				watchon.setOnClickListener(new View.OnClickListener() {
@@ -403,7 +420,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 
 					@Override
 					public void run() {
-						trailer.setText("N/A");
+						trailer.setText("TRAILER");
 					}
 				});
 				trailer.setOnClickListener(new View.OnClickListener() {
