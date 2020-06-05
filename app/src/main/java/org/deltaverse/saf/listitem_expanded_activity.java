@@ -31,12 +31,8 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 public class listitem_expanded_activity extends AppCompatActivity
 {
     ImageView imageView,background,background3;
-    TextView title,unavailable;
-    TextView year;
-    TextView rating;
-    Button watchon;
-    TextView desc;
-    Button trailer;
+    TextView title,unavailable,year,rating,desc;
+    Button watchon,download,trailer;
     LinearLayout layout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -148,6 +144,7 @@ public class listitem_expanded_activity extends AppCompatActivity
 		watchon = findViewById(R.id.watchon);
 		trailer = findViewById(R.id.trailer);
 		layout = findViewById(R.id.linear);
+		download = findViewById(R.id.download);
 		try
 		{
 			//POSTER
@@ -334,6 +331,13 @@ public class listitem_expanded_activity extends AppCompatActivity
 					}
 				});
 			}
+
+			//DOWNLOAD
+			download.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					goToUrl("https://play.google.com/store/apps/details?id=org.jsp.wide");
+				}
+			});
 
 			//WATCH LINK
 			Elements watchon_classes = doc.getElementsByClass("css-1j38j0s e126mwsw1");
