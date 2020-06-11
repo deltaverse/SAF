@@ -66,6 +66,24 @@ public class SearchActivity extends AppCompatActivity {
 	ConstraintSet constraintSet2;
 	ConstraintSet temp;
 	int sliding_dot_status = 0;
+	int resume_tag = 0;
+	@Override
+	public void onBackPressed() {
+		if(clear_search.getVisibility()==View.VISIBLE){
+			clear_search.performClick();
+		}else{
+			super.onBackPressed();
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if(resume_tag == -1){
+			startActivity(new Intent(SearchActivity.this, SearchActivity.class));
+			finish();
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -424,7 +442,13 @@ public class SearchActivity extends AppCompatActivity {
 		Movies_headline.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				movie_tv_container.setVisibility(View.VISIBLE);
+				Handler handler = new Handler();
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						movie_tv_container.setVisibility(View.VISIBLE);
+					}
+				},690);
 				if (sliding_dot_status != 0) {
 					sliding_dot_status = 0;
 					TransitionManager.beginDelayedTransition(main_constraint_layout);
@@ -448,7 +472,13 @@ public class SearchActivity extends AppCompatActivity {
 		TV_headline.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				movie_tv_container.setVisibility(View.VISIBLE);
+				Handler handler = new Handler();
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						movie_tv_container.setVisibility(View.VISIBLE);
+					}
+				},690);
 				if (sliding_dot_status != 1) {
 					sliding_dot_status = 1;
 					TransitionManager.beginDelayedTransition(main_constraint_layout);
@@ -472,6 +502,7 @@ public class SearchActivity extends AppCompatActivity {
 		My_list_headline.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				movie_tv_container.setVisibility(View.INVISIBLE);
 				if (sliding_dot_status != 2) {
 					sliding_dot_status = 2;
 					TransitionManager.beginDelayedTransition(main_constraint_layout);
@@ -484,7 +515,7 @@ public class SearchActivity extends AppCompatActivity {
 					constraintSet.connect(R.id.sliding_dot, ConstraintSet.END, R.id.my_list_heading, ConstraintSet.END);
 					constraintSet.applyTo(main_constraint_layout);
 					constraintSet1.clone(main_constraint_layout);
-					movie_tv_container.setVisibility(View.INVISIBLE);
+					clear_all_layouts();
 				}
 			}
 		});
@@ -498,6 +529,7 @@ public class SearchActivity extends AppCompatActivity {
 					Intent i = new Intent(SearchActivity.this, listitem_expanded_activity.class);
 					i.putExtra("data_object", movieObjects.get(position).getData_Object().toString());
 					startActivity(i);
+					resume_tag = -1;
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
