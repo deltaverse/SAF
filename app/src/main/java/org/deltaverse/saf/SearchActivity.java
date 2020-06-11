@@ -146,9 +146,9 @@ public class SearchActivity extends AppCompatActivity {
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
-				String base_url = "https://reelgood.com/";
+				final String base_url = "https://reelgood.com";
 				try {
-					Document doc = Jsoup.connect(base_url + "movies/browse/popular-movies").get();
+					Document doc = Jsoup.connect(base_url+"/" + "movies/browse/popular-movies").get();
 					Element table = doc.getElementsByTag("table").get(0);
 					Element table_body = table.getElementsByTag("tbody").get(0);
 					Elements table_rows = table_body.getElementsByTag("tr");
@@ -159,13 +159,20 @@ public class SearchActivity extends AppCompatActivity {
 						Element link_root = banner_root.getElementsByTag("a").get(0);
 						Element img_root = link_root.getElementsByTag("picture").get(0).getElementsByTag("img").get(0);
 						final String img_href = img_root.attr("src");
-						String link_href = link_root.attr("href");
+						final String link_href = link_root.attr("href");
 						System.out.println("Poster_url :" + img_href + "\n" + "On_click : " + base_url + link_href);
 						final View rootview = layoutInflater.inflate(R.layout.movie_item_layout, popular_layout, false);
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
 								ImageView imageView = rootview.findViewById(R.id.item_image_view);
+								imageView.setOnClickListener(new View.OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										Toast.makeText(getApplicationContext(),base_url+link_href,Toast.LENGTH_SHORT).show();
+										On_movie_tv_container_item_clicked(base_url+link_href);
+									}
+								});
 								Picasso.get().load(img_href).into(imageView);
 								popular_layout.addView(rootview);
 							}
@@ -186,9 +193,9 @@ public class SearchActivity extends AppCompatActivity {
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
-				String base_url = "https://reelgood.com/";
+				final String base_url = "https://reelgood.com";
 				try {
-					Document doc = Jsoup.connect(base_url + "movies/source/netflix?filter-sort=1").get();
+					Document doc = Jsoup.connect(base_url+"/" + "movies/source/netflix?filter-sort=1").get();
 					Element table = doc.getElementsByTag("table").get(0);
 					Element table_body = table.getElementsByTag("tbody").get(0);
 					Elements table_rows = table_body.getElementsByTag("tr");
@@ -199,13 +206,20 @@ public class SearchActivity extends AppCompatActivity {
 						Element link_root = banner_root.getElementsByTag("a").get(0);
 						Element img_root = link_root.getElementsByTag("picture").get(0).getElementsByTag("img").get(0);
 						final String img_href = img_root.attr("src");
-						String link_href = link_root.attr("href");
+						final String link_href = link_root.attr("href");
 						System.out.println("Poster_url :" + img_href + "\n" + "On_click : " + base_url + link_href);
 						final View rootview = layoutInflater.inflate(R.layout.movie_item_layout, netflix_layout, false);
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
 								ImageView imageView = rootview.findViewById(R.id.item_image_view);
+								imageView.setOnClickListener(new View.OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										Toast.makeText(getApplicationContext(),base_url+link_href,Toast.LENGTH_SHORT).show();
+										On_movie_tv_container_item_clicked(base_url+link_href);
+									}
+								});
 								TransitionManager.beginDelayedTransition(netflix_layout);
 								Picasso.get().load(img_href).into(imageView);
 								netflix_layout.addView(rootview);
@@ -227,9 +241,9 @@ public class SearchActivity extends AppCompatActivity {
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
-				String base_url = "https://reelgood.com/";
+				final String base_url = "https://reelgood.com";
 				try {
-					Document doc = Jsoup.connect(base_url + "movies/source/amazon?filter-sort=1").get();
+					Document doc = Jsoup.connect(base_url+"/" + "movies/source/amazon?filter-sort=1").get();
 					Element table = doc.getElementsByTag("table").get(0);
 					Element table_body = table.getElementsByTag("tbody").get(0);
 					Elements table_rows = table_body.getElementsByTag("tr");
@@ -240,13 +254,20 @@ public class SearchActivity extends AppCompatActivity {
 						Element link_root = banner_root.getElementsByTag("a").get(0);
 						Element img_root = link_root.getElementsByTag("picture").get(0).getElementsByTag("img").get(0);
 						final String img_href = img_root.attr("src");
-						String link_href = link_root.attr("href");
+						final String link_href = link_root.attr("href");
 						System.out.println("Poster_url :" + img_href + "\n" + "On_click : " + base_url + link_href);
 						final View rootview = layoutInflater.inflate(R.layout.movie_item_layout, prime_layout, false);
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
 								ImageView imageView = rootview.findViewById(R.id.item_image_view);
+								imageView.setOnClickListener(new View.OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										Toast.makeText(getApplicationContext(),base_url+link_href,Toast.LENGTH_SHORT).show();
+										On_movie_tv_container_item_clicked(base_url+link_href);
+									}
+								});
 								Picasso.get().load(img_href).into(imageView);
 								prime_layout.addView(rootview);
 							}
@@ -268,9 +289,9 @@ public class SearchActivity extends AppCompatActivity {
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
-				String base_url = "https://reelgood.com/";
+				final String base_url = "https://reelgood.com";
 				try {
-					Document doc = Jsoup.connect(base_url + "tv/curated/trending-picks").get();
+					Document doc = Jsoup.connect(base_url+"/" + "tv/curated/trending-picks").get();
 					Element table = doc.getElementsByTag("table").get(0);
 					Element table_body = table.getElementsByTag("tbody").get(0);
 					Elements table_rows = table_body.getElementsByTag("tr");
@@ -281,13 +302,20 @@ public class SearchActivity extends AppCompatActivity {
 						Element link_root = banner_root.getElementsByTag("a").get(0);
 						Element img_root = link_root.getElementsByTag("picture").get(0).getElementsByTag("img").get(0);
 						final String img_href = img_root.attr("src");
-						String link_href = link_root.attr("href");
+						final String link_href = link_root.attr("href");
 						System.out.println("Poster_url :" + img_href + "\n" + "On_click : " + base_url + link_href);
 						final View rootview = layoutInflater.inflate(R.layout.movie_item_layout, popular_layout, false);
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
 								ImageView imageView = rootview.findViewById(R.id.item_image_view);
+								imageView.setOnClickListener(new View.OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										Toast.makeText(getApplicationContext(),base_url+link_href,Toast.LENGTH_SHORT).show();
+										On_movie_tv_container_item_clicked(base_url+link_href);
+									}
+								});
 								Picasso.get().load(img_href).into(imageView);
 								popular_layout.addView(rootview);
 							}
@@ -308,9 +336,9 @@ public class SearchActivity extends AppCompatActivity {
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
-				String base_url = "https://reelgood.com/";
+				final String base_url = "https://reelgood.com";
 				try {
-					Document doc = Jsoup.connect(base_url + "tv/source/netflix").get();
+					Document doc = Jsoup.connect(base_url+"/" + "tv/source/netflix").get();
 					Element table = doc.getElementsByTag("table").get(0);
 					Element table_body = table.getElementsByTag("tbody").get(0);
 					Elements table_rows = table_body.getElementsByTag("tr");
@@ -321,13 +349,20 @@ public class SearchActivity extends AppCompatActivity {
 						Element link_root = banner_root.getElementsByTag("a").get(0);
 						Element img_root = link_root.getElementsByTag("picture").get(0).getElementsByTag("img").get(0);
 						final String img_href = img_root.attr("src");
-						String link_href = link_root.attr("href");
+						final String link_href = link_root.attr("href");
 						System.out.println("Poster_url :" + img_href + "\n" + "On_click : " + base_url + link_href);
 						final View rootview = layoutInflater.inflate(R.layout.movie_item_layout, netflix_layout, false);
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
 								ImageView imageView = rootview.findViewById(R.id.item_image_view);
+								imageView.setOnClickListener(new View.OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										Toast.makeText(getApplicationContext(),base_url+link_href,Toast.LENGTH_SHORT).show();
+										On_movie_tv_container_item_clicked(base_url+link_href);
+									}
+								});
 								Picasso.get().load(img_href).into(imageView);
 								netflix_layout.addView(rootview);
 							}
@@ -348,9 +383,9 @@ public class SearchActivity extends AppCompatActivity {
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
-				String base_url = "https://reelgood.com/";
+				final String base_url = "https://reelgood.com";
 				try {
-					Document doc = Jsoup.connect(base_url + "tv/source/amazon").get();
+					Document doc = Jsoup.connect(base_url+"/" + "tv/source/amazon").get();
 					Element table = doc.getElementsByTag("table").get(0);
 					Element table_body = table.getElementsByTag("tbody").get(0);
 					Elements table_rows = table_body.getElementsByTag("tr");
@@ -361,13 +396,20 @@ public class SearchActivity extends AppCompatActivity {
 						Element link_root = banner_root.getElementsByTag("a").get(0);
 						Element img_root = link_root.getElementsByTag("picture").get(0).getElementsByTag("img").get(0);
 						final String img_href = img_root.attr("src");
-						String link_href = link_root.attr("href");
+						final String link_href = link_root.attr("href");
 						System.out.println("Poster_url :" + img_href + "\n" + "On_click : " + base_url + link_href);
 						final View rootview = layoutInflater.inflate(R.layout.movie_item_layout, prime_layout, false);
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
 								ImageView imageView = rootview.findViewById(R.id.item_image_view);
+								imageView.setOnClickListener(new View.OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										Toast.makeText(getApplicationContext(),base_url+link_href,Toast.LENGTH_SHORT).show();
+										On_movie_tv_container_item_clicked(base_url+link_href);
+									}
+								});
 								Picasso.get().load(img_href).into(imageView);
 								prime_layout.addView(rootview);
 							}
@@ -442,13 +484,6 @@ public class SearchActivity extends AppCompatActivity {
 		Movies_headline.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Handler handler = new Handler();
-				handler.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						movie_tv_container.setVisibility(View.VISIBLE);
-					}
-				},690);
 				if (sliding_dot_status != 0) {
 					sliding_dot_status = 0;
 					TransitionManager.beginDelayedTransition(main_constraint_layout);
@@ -463,6 +498,7 @@ public class SearchActivity extends AppCompatActivity {
 					constraintSet1.clone(main_constraint_layout);
 					clear_all_layouts();
 					load_movies();
+					movie_tv_container.setVisibility(View.VISIBLE);
 				}
 			}
 		});
@@ -472,13 +508,6 @@ public class SearchActivity extends AppCompatActivity {
 		TV_headline.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Handler handler = new Handler();
-				handler.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						movie_tv_container.setVisibility(View.VISIBLE);
-					}
-				},690);
 				if (sliding_dot_status != 1) {
 					sliding_dot_status = 1;
 					TransitionManager.beginDelayedTransition(main_constraint_layout);
@@ -493,6 +522,7 @@ public class SearchActivity extends AppCompatActivity {
 					constraintSet1.clone(main_constraint_layout);
 					clear_all_layouts();
 					load_tv();
+					movie_tv_container.setVisibility(View.VISIBLE);
 				}
 			}
 		});
@@ -519,6 +549,15 @@ public class SearchActivity extends AppCompatActivity {
 				}
 			}
 		});
+	}
+
+
+	//todo
+	//Receive this data on listview_expanded_activity and display it
+	public void On_movie_tv_container_item_clicked(String url){
+//		Intent i = new Intent(SearchActivity.this, <To-go Activity>.class);
+//		i.putExtra("url_data",url);
+//		startActivity(i);
 	}
 
 	public void grid_item_click_listener() {
@@ -576,7 +615,16 @@ public class SearchActivity extends AppCompatActivity {
 							public void run() {
 								search_icon_main.setImageResource(R.drawable.ic_search_real_black_24dp);
 								search_icon_main.setBackground(getDrawable(R.drawable.round_bg));
-								movie_tv_container.setVisibility(View.VISIBLE);
+								switch (sliding_dot_status){
+									case 0 :
+									case 1 :
+										Toast.makeText(getApplicationContext(),String.valueOf(sliding_dot_status),Toast.LENGTH_SHORT).show();
+										movie_tv_container.setVisibility(View.VISIBLE);
+										break;
+									case 2 :
+										Toast.makeText(getApplicationContext(),String.valueOf(sliding_dot_status),Toast.LENGTH_SHORT).show();
+										break;
+								}
 							}
 						});
 					}
